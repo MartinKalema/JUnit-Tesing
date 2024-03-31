@@ -106,6 +106,28 @@ public class RoomTest {
             fail("Unexpected TimeConflictException: " + e.getMessage());
         }
     }
+    
+    @Test(expected = TimeConflictException.class)
+    public void testIsBusy_InvalidTime() throws TimeConflictException {
+        // Try checking if room is busy with invalid time inputs
+        room.isBusy(4, 1, -1, 10); // Negative start time
+    }
+
+    @Test(expected = TimeConflictException.class)
+    public void testAddMeeting_InvalidDate() throws TimeConflictException {
+        // Try adding a meeting with an invalid date
+        Meeting invalidDateMeeting = new Meeting(2, 30, 10, 11); // February 30th
+        room.addMeeting(invalidDateMeeting);
+    }
+
+    @Test
+    public void testPrintAgenda_EmptyCalendar() {
+        // Test printing agenda for a month with no meetings
+        String agenda = room.printAgenda(5); // Assuming May (5th month) with no meetings
+        assertNotNull(agenda);
+        assertEquals("", agenda.trim()); // Expected empty agenda
+    }
+
 }
 
 
