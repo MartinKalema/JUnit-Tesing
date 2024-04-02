@@ -1,80 +1,64 @@
 package edu.sc.bse3211.meetingplanner;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-
 import java.util.ArrayList;
-
-import org.junit.Before;
-import org.junit.Test;
-
+import static org.junit.Assert.*;
 
 public class MeetingTest {
-    
-	// Add test methods here. 
-    // You are not required to write tests for all classes.
 
-
-    private Meeting meeting;
-    private Person person;
-    private Room room;
-
-    @Before
-    public void setUp() {
-        // Initialize Meeting instance before each test
-        room = new Room("Room 1");
-        person = new Person("John Doe");
-        meeting = new Meeting(4, 1, 10, 11, new ArrayList<>(), room, "Meeting 1");
-    }
-
+    @SuppressWarnings("unused")
     @Test
-    public void testMeetingInitialization() {
-        // Test initialization of Meeting object
-        assertEquals(4, meeting.getMonth());
-        assertEquals(1, meeting.getDay());
-        assertEquals(10, meeting.getStartTime());
-        assertEquals(11, meeting.getEndTime());
-        assertEquals("Meeting 1", meeting.getDescription());
-        assertEquals(room, meeting.getRoom());
+    public void testDefaultConstructor() {
+        // **Test Description:** This test verifies that the default constructor of the Meeting class initializes all 
+		//                       fields to their default values, including NULL for all objects and empty ArrayList for attendees.
+        Meeting meeting = new Meeting();
+        assertNull(meeting.getMonth());
+        assertNull(meeting.getDay());
+        assertNull(meeting.getStartTime());
+        assertNull(meeting.getEndTime());
+        assertNull(meeting.getRoom());
+        assertNull(meeting.getDescription());
         assertTrue(meeting.getAttendees().isEmpty());
     }
 
     @Test
     public void testAddAttendee() {
-        // Test adding an attendee to the meeting
-        meeting.addAttendee(person);
-        assertEquals(1, meeting.getAttendees().size());
-        assertTrue(meeting.getAttendees().contains(person));
+        // **Test Description:** This test verifies that the addAttendee method correctly adds an attendee to the list of
+		//                       attendees of a Meeting object.
+        ArrayList<Person> attendees = new ArrayList<Person>() {{
+            add(new Person("Nagaba"));
+        }};
+        Room room = new Room("1A");
+        Meeting meeting = new Meeting(1, 1, 9, 10, attendees, room , "Test Meeting");
+        meeting.addAttendee(new Person("Jane Smith"));
+        assertTrue(meeting.getAttendees().contains(new Person("Jane Smith")));
     }
+
 
     @Test
     public void testRemoveAttendee() {
-        // Test removing an attendee from the meeting
-        meeting.addAttendee(person);
-        meeting.removeAttendee(person);
-        assertTrue(meeting.getAttendees().isEmpty());
+        // **Test Description:** This test verifies that the removeAttendee method correctly removes an attendee from the list of
+		//                       attendees of a Meeting object
+        ArrayList<Person> attendees = new ArrayList<Person>() {{
+            add(new Person("John Doe"));
+            add(new Person("Jane Smith"));
+        }};
+        Meeting meeting = new Meeting(1, 1, 9, 10, attendees, new Room("1A"), "Test Meeting");
+        meeting.removeAttendee(new Person("John Doe"));
+        assertFalse(meeting.getAttendees().contains(new Person("John Doe")));
+        assertTrue(meeting.getAttendees().contains(new Person("Jane Smith")));
     }
 
     @Test
     public void testToString() {
-        // Test toString method
-        meeting.addAttendee(person);
-        String expected = "4/1, 10 - 11,Room 1: Meeting 1\nAttending: John Doe";
+        // **Test Description:** This test verifies that the toString method formats the meeting details correctly,
+		//                       including the meeting's date, time, room, attendees, and title.
+        ArrayList<Person> attendees = new ArrayList<Person>() {{
+            add(new Person("John Doe"));
+            add(new Person("Jane Smith"));
+        }};
+        Meeting meeting = new Meeting(1, 1, 9, 10, attendees, new Room("1A"), "Test Meeting");
+        String expected = "1/1, 9 - 10,1A: Test Meeting\nAttending: John Doe, Jane Smith";
         assertEquals(expected, meeting.toString());
     }
 }
-
-/* testMeetingInitialization() verifies that the meeting is initialized correctly.
-testAddAttendee() tests adding an attendee to the meeting.
-testRemoveAttendee() tests removing an attendee from the meeting.
-testToString() tests the toString() method of the Meeting class to
- ensure it returns the expected string representation of the meeting
- 
- pushing........
- git add A
- git commit -m "..."
- git push -u origin maing*/
