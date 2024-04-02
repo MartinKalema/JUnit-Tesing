@@ -21,7 +21,7 @@ public class MeetingTest {
         assertEquals(1, meeting.getDay());
         assertEquals(9, meeting.getStartTime());
         assertEquals(10, meeting.getEndTime());
-        assertEquals(room, meeting.getRoom());
+        assertEquals("1A", meeting.getRoom().getID());
         assertEquals("Test Meeting", meeting.getDescription());
         assertFalse(meeting.getAttendees().isEmpty());
     }
